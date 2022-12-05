@@ -1,132 +1,121 @@
-let presentacion = alert("Bienvenido a casa moto dc");
-let nombre = prompt("Ingrese su nombre");
-let direccion = prompt("Ingrese su Email");
+const Clickbutton = document.querySelectorAll('.button')
+const tbody = document.querySelector('.tbody')
+let carrito = []
 
-/* --------BUCLE-------- */
+Clickbutton.forEach(btn =>{
+  btn.addEventListener('click', addToCarritoItem)
+})
 
-let producto = prompt("ingrese 1 si decea un producto, ingrese 2 si es por un reclamo");
-while (producto != "esc") {
-    switch (producto) {
-        case "1":
-            alert("nos gustaria saber que moto fue la que le gusto");
-            break;
-        case "2":
-            let telefono = prompt("Ingrese su mensaje");
-            let salida = "Hola " + nombre + " " + " Bienvenido en breve nos comunicaremos con usted";
-            alert(salida);
-        default:
-            alert("Opcion incorrecta")
-            break;
-    }
-    finalizado = prompt("gracias por elegirnos");
-    break;
+function addToCarritoItem(e){
+  const button = e.target
+  const item = button.closest('.card')  /* obten el contenedor q tnga la la clase mas cercana a card */
+  const itemTitle = item.querySelector('.card-title').textContent;
+  const itemPrice = item.querySelector('.precio').textContent;
+  const itemImg = item.querySelector('.card-img-top').src;
+  
+  const newItem = {
+    title: itemTitle,
+    precio: itemPrice,
+    img: itemImg,
+    cantidad: 1
+  }
+  addItemCarrito(newItem)
 }
 
-/* -----OBJETOS DE JS------- */
+function addItemCarrito(newItem){
 
-let disponibles = alert("presiona aceptar para ver las motos que tenemos disponibles");
-
-  class Producto {                                  
-    constructor(marca, modelo, color) {                     
-      this.marca = marca;                             
-      this.modelo = modelo;
-      this.color = color;                           
-      this.vendido = false;                               
-    }                                                 
-  
-    vender(){
-      this.vendido = true;  
+  const InputElemento = tbody.getElementsByClassName('input__elemento') 
+  for(let i = 0; i < carrito.length; i++){
+    if(carrito[i].title.trim() === newItem.title.trim()){
+      carrito[i].cantidad ++;
+      const inputValue = InputElemento[i]
+      inputValue.value++;
+      CarritoTotal()
+      return null;
     }
   }
 
+  carrito.push(newItem)
 
-          let producto1 = new Producto("yamaha sz 150", 2018, "verde");
-          producto1.vender(); 
+  renderCarrito()
+}
 
-          let mensaje1 = `
-          ${producto1.marca}
-          ${producto1.modelo}
-          ${producto1.color}
-          ${producto1.vendido}
-        `;
+function renderCarrito(){
+  tbody.innerHTML = ''
+  carrito.map(item => {
+    const tr =document.createElement('tr')
+    tr.classList.add('ItemCarrito')
+    const Content =` 
+    
+    <th scope="row">1</th>
+                        <td class="table__productos">
+                            <img src=${item.img} alt="">
+                            <h6 class="title">${item.title}</h6>
+                        </td>
+                        <td class="table__price"><p>${item.precio}</p></td>
+                        <td class="table__cantidad">
+                            <input type="number" min="1" value=${item.cantidad} class="input__elemento">
+                            <button  class="delete btn btn-danget bg-danger">x</button>
+                        </td>
+    
+    `
+     tr.innerHTML = Content;
+     tbody.append(tr)
 
-        alert(mensaje1);
-        
+     tr.querySelector(".delete").addEventListener('click', removeItemCarrito)
+     tr.querySelector(".input__elemento").addEventListener('change', sumaCantidad)
+  })
+  CarritoTotal()
+}
 
+function CarritoTotal(){
+  let Total = 0;
+  const itemCartTotal = document.querySelector('.itemCartTotal')
+  carrito.forEach((item) => {
+    const precio = Number(item.precio.replace("$", ''))
+    Total = Total + precio*item.cantidad
+  })
 
-          let producto2 = new Producto("yamaha ybr 125", 2016, "azul");
-          let mensaje2 = `
-          ${producto2.marca}
-          ${producto2.modelo}
-          ${producto2.color}
-          ${producto2.vendido}
-        `;
+  itemCartTotal.innerHTML = `Total $${Total}`
+  addLocalStorage()
+}
 
-        alert(mensaje2);
+function removeItemCarrito(e){
+  const buttonDelete = e.target
+  const tr = buttonDelete.closest(".ItemCarrito")
+  const title = tr.querySelector('.title').textContent;
+  for(let i=0; i<carrito.length ; i++){
 
-          let producto3 = new Producto("cl500", 2023, "negro");
-          console.log(producto3);
-          let mensaje3 = `
-          ${producto3.marca}
-          ${producto3.modelo}
-          ${producto3.color}
-          ${producto3.vendido}
-        `;
-        
-        alert(mensaje3);
+    if(carrito[i].title.trim() === title.trim()){
+      carrito.splice(i, 1)
+      console.log('hola mundo')
+    }
+  }
+  tr.remove()
+  CarritoTotal()
+}
 
-          let producto4 = new Producto("honda wave 110", 2022, "rojo");
-          console.log(producto4);
-          let mensaje4 = `
-          ${producto4.marca}
-          ${producto4.modelo}
-          ${producto4.color}
-          ${producto4.vendido}
-        `;
-        
-        alert(mensaje4);
+function sumaCantidad(e){
+  const sumaInput  = e.target
+  const tr = sumaInput.closest(".ItemCarrito")
+  const title = tr.querySelector('.title').textContent;
+  carrito.forEach(item => {
+    if(item.title.trim() === title){
+      sumaInput.value < 1 ?  (sumaInput.value = 1) : sumaInput.value;
+      item.cantidad = sumaInput.value;
+      CarritoTotal()
+    }
+  })
+}
 
-       
-                     /* ------ARRAYS------ */
+function addLocalStorage(){
+  localStorage.setItem('carrito', JSON.stringify(carrito))
+}
 
-let stock = alert("¿te gusto alguna? decinos cual para ver si hay stock");
-                
-             const productos = [
-               { id: 1, moto: "honda wave 110", precio: "$ 350.000" },
-               { id: 2, moto: "yamaha ybr 125", precio: "$ 600.000" },
-               { id: 3, moto: "cl500", precio: "$ 900.000" },
-             ];
-
-             let encontrado = false;
-             let moto = prompt("ingrese la moto que desea");
-            
-             for(const producto of productos){
-                if(producto.moto === moto){ 
-                    encontrado = true;
-             }
-            }
-            
-            if(encontrado){
-                alert("moto disponible");
-            }else{
-                alert("moto no disponible");
-            }
-
-/* -------ARRAYS GUARDAMOS EL PRODUCTO----- */
-
- let favorita = alert("decinos que moto guardamos"); 
-          
-
-         const marca = ["cl500", "yamaha sz 150", "honda wave 110", "yamaha ybr"];
-
-        const guardar = (nombre) => {
-               let index = marca.indexOf(nombre);
-            
-               if(index != -1){
-                 marca.splice(index, 1);
-            
-                 console.log(marca);
-               }
-             };
-            
-             guardar("cl500");       
+window.onload = function(){
+  const storage = JSON.parse(localStorage.getItem('carrito'));
+  if(storage){
+    carrito = storage;
+    renderCarrito()
+  }
+}
