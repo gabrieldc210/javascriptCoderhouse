@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "email": "trt",
+      "nombre": "tret",
+      "telefono": "tretr",
+      "id": 1
+    },
+    {
+      "email": "",
+      "nombre": "",
+      "telefono": "",
+      "id": 2
+    },
+    {
+      "email": "leandro@yahoo.com",
+      "nombre": "miguel",
+      "telefono": "4240-5686",
+      "id": 3
+    },
+    {
+      "email": "aanas@gmail.com",
+      "nombre": "gabriel",
+      "telefono": "4240-5686",
+      "id": 4
+    }
+  ]
+}

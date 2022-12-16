@@ -1,0 +1,19 @@
+{
+  "name": "trabajo-2",
+  "version": "1.0.0",
+  "description": "trabajo practico final",
+  "main": "index.js",
+  "scripts": {
+    "json:server": "json-server --watch tb.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrieldc210/javascriptCoderhouse.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabrieldc210/javascriptCoderhouse/issues"
+  },
+  "homepage": "https://github.com/gabrieldc210/javascriptCoderhouse#readme"
+}
