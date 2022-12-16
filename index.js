@@ -176,7 +176,7 @@ const postData = async () => {
 
         respuesta.innerHTML = 
         `<ul> 
-           Se guardó la información en la brevedad nos contactaremos!:
+           Ya estas suscrito a las novedades!:
           <li>${email}</li> 
           <li>${nombre}</li> 
           <li>${telefono}</li>
